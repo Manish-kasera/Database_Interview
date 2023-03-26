@@ -1,0 +1,372 @@
+-- TOP 50 QUESTIONS FOR INTERVIEW
+
+CREATE DATABASE ORG;
+show databases;
+use ORG;
+
+CREATE TABLE Worker (
+WORKER_ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+FIRST_NAME CHAR(25),
+LAST_NAME CHAR(25),
+SALARY INT (15),
+JOINING_DATE DATETIME, 
+DEPARTMENT CHAR(25)
+);
+
+show tables;
+
+
+INSERT INTO Worker 
+ (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT) VALUES 
+ (001, 'Monika', 'Arora', 100000, '14-02-20 09.00.00', 'HR'), 
+ (002, 'Niharika', 'Verma', 80000, '14-06-11 09.00.00', 'Admin'), 
+ (003, 'Vishal', 'Singhal', 300000, '14-02-20 09.00.00', 'HR'), 
+ (004, 'Amitabh', 'Singh', 500000, '14-02-20 09.00.00', 'Admin'), 
+ (005, 'Vivek', 'Bhati', 500000, '14-06-11 09.00.00', 'Admin'), 
+ (006, 'Vipul', 'Diwan', 200000, '14-06-11 09.00.00', 'Account'), 
+ (007, 'Satish', 'Kumar', 75000, '14-01-20 09.00.00', 'Account'), 
+ (008, 'Geetika', 'Chauhan', 90000, '14-04-11 09.00.00', 'Admin');
+ 
+select * from Worker;
+
+CREATE TABLE Bonus ( 
+ WORKER_REF_ID INT, 
+ BONUS_AMOUNT INT(10), 
+ BONUS_DATE DATETIME,
+ FOREIGN KEY (WORKER_REF_ID)
+ REFERENCES Worker (WORKER_ID)
+ ON DELETE CASCADE
+);
+
+INSERT INTO Bonus
+  (WORKER_REF_ID, BONUS_AMOUNT, BONUS_DATE) VALUES
+   (001, 5000, '16-02-20'),
+   (002, 3000, '16-06-11'), 
+   (003, 4000, '16-02-20'),
+   (001, 4500, '16-02-20'),
+   (002, 3500, '16-06-11');
+
+select * from Bonus;
+
+CREATE TABLE Title (
+WORKER_REF_ID INT,
+WORKER_TITLE CHAR(25), 
+AFFECTED_FROM DATETIME,
+FOREIGN KEY (WORKER_REF_ID)
+REFERENCES Worker(WORKER_ID) 
+ON DELETE CASCADE
+);
+
+INSERT INTO Title VALUES (001, 'Manager', '2016-02-20 00:00:00 ');
+INSERT INTO Title VALUES (002, 'Executive', '2016-06-11 00:00:00');
+INSERT INTO Title VALUES (008, 'Executive', '2016-06-11 00:00:00'); 
+INSERT INTO Title VALUES (005, 'Manager', '2016-06-11 00:00:00'); 
+INSERT INTO Title VALUES (004, 'Asst.Manager', '2016-06-11 00:00:00');
+INSERT INTO Title VALUES (007, 'Executive', '2016-06-11 00:00:00');
+INSERT INTO Title VALUES (006, 'Lead', '2016-06-11 00:00:00 ');
+INSERT INTO Title VALUES (003, 'Lead', '2016-06-11 00:00:00');
+
+select * from Title;
+
+
+-- Q1. first name from worker table using alias "WORKER NAME"
+select FIRST_NAME as WORKER_NAME from Worker; 
+
+-- Q2.first name from worker table in upperCase
+select uCase(FIRST_NAME) from Worker;
+
+-- first name from worker table in lowerCase
+select lCase(FIRST_NAME) from Worker;
+
+-- Q3. Fetch unique value of Department from Worker Table
+select distinct(Department) from Worker;
+-- using group by
+select Department from Worker
+group by Department;
+
+-- Q4. Print first three character of FIRST_NAME from Worker Table(imp)
+select Substring(FIRST_NAME,1,3) from Worker; 
+
+-- Q5. find the postition of alpbhet('b') in the first_name column 'Amitabh' from Worker table(imp)
+select distinct(POSITION('b' IN 'Amitabh')) as Position from Worker ;
+select instr(FIRST_NAME,'b') as Position from Worker where FIRST_NAME = 'Amitabh';
+
+-- Q6. Print first_name from Worker Table after removing white spaces from right side(imp)
+select RTRIM(FIRST_NAME) from Worker;
+
+
+-- Q7. Print first_name from Worker Table after removing white spaces from left side
+select LTRIM(FIRST_NAME) from Worker;
+
+
+-- Q8. Unique value of department and its length from Worker Table
+select distinct(Department),length(Department) from Worker;
+select Department,length(Department) from Worker
+group by Department;
+
+-- Q9. Print the First_Name from Worker Table repalce 'a' with 'A'(imp)
+select replace(FIRST_NAME,'a','A') from Worker;
+
+-- Q10. print FirstName and LastName from Worker Table into sinle column COMPLETE_NAME (imp)
+-- a space char should be separted
+select concat(FIRST_NAME,' ',LAST_NAME) as COMPLETE_NAME from Worker;
+
+
+-- Q11. Print all Workers details from Worker Table sort(First_Name) in Ascending
+select * from Worker
+order by FIRST_NAME asc;   
+
+-- Q12.  Print all Workers details from Worker Table sort(First_Name) in Ascending (imp)
+-- and Department desc
+select * from Worker
+order by FIRST_NAME asc,
+Department desc;   
+
+
+-- Q13. Print all Workers details from Worker Table with the firstname 'Vipul' or 'Satish'
+select * from Worker
+where FIRST_NAME IN ('Vipul','Satish');  
+
+select * from Worker
+where FIRST_NAME ='Vipul' OR FIRST_NAME ='Satish'; 
+
+-- Q14. Print all Workers details from Worker Table excluded firstname 'Vipul' or 'Satish'
+select * from Worker
+where FIRST_NAME NOT IN ('Vipul','Satish');  
+ 
+ -- Q15. Print all details of Worker with Department as 'Admin*'(imp)
+ select * from Worker
+ where Department Like 'Admin%';
+ 
+ -- Q16. Print all details of Worker Table whose first name Contains 'a'(imp)
+ select * from Worker
+ where FIRST_NAME Like'%a%';
+ 
+ -- Q17. Print all details of Worker Table whose first name end with 'a'(imp)
+ select * from Worker
+ where FIRST_NAME Like '%a';
+ 
+ -- Q18. Print all details of Worker Table whose first name end with 'h' (imp)
+ -- and contains 6 alphabet
+ select * from Worker
+ where FIRST_NAME Like '%h' and
+ length(FIRST_NAME) = 6;
+ 
+ select * from Worker
+ where FIRST_NAME Like '_____h';
+ 
+ -- Q19. Print all details of Worker Table where salary lie between 100000 and 500000
+ select * from Worker
+ where SALARY between 100000 and 500000;
+  
+  -- Q20. Print all details of Worker Table who joined on Feb 2014 (imp)
+  select * from Worker 
+  where YEAR(JOINING_DATE) = 2014
+  and MONTH(JOINING_DATE) = 02;
+  
+  -- Q21. Count no. of employee working in Department 'Admin' 
+  select Department,count(Department) from Worker
+  group by Department
+  having Department = 'Admin';
+  
+  select Department,count(Department) from Worker
+  where Department ='Admin';
+  
+  -- Q22. Worker full name with salary >= 50000 and salary <= 100000
+  select CONCAT(FIRST_NAME,' ', LAST_NAME) as Full_Name from Worker
+  where SALARY between 50000 and 100000;
+  
+  -- Q23. No of workers in each dep in desc order
+  select Department, count(Department) as noOfWorker from Worker
+  group by Department
+  order by noOfWorker desc;
+  
+  -- Q24. Print Details of Worker who are also Managers; (imp)
+select w.* from Worker as w
+inner join Title as t
+on w.WORKER_ID =t.WORKER_REF_ID
+where t.Worker_TITLE ='Manager';  
+
+-- Q25. Fetch number(more than 1) of same title in the ORG of different types
+select WORKER_TITLE,count(WORKER_TITLE) as countTitle from Title
+group by WORKER_TITLE
+having countTitle > 1;
+
+-- Q26. To show only odd rows from Worker table(IMP)
+select * from Worker
+where MOD(Worker_id,2)!=0;
+
+select * from Worker
+where MOD(Worker_id,2) <> 0;
+
+-- Q27. To show only even rows from worker table
+select * from Worker
+where MOD(Worker_id, 2) = 0;
+
+-- Q28. Write a SQL query to clone a new table from another table (BEST)
+Create table Worker_Clone Like Worker; 
+Insert into Worker_Clone select * from Worker;
+select * from Worker_Clone; 
+delete from Worker_Clone where Worker_id = 8; -- (Just removing one tuple) 
+
+
+-- Q29. Write an SQL to fetch intersecting(Common) record of two table;(INTERSECTION)
+select Worker.* from Worker 
+inner join Worker_Clone
+using (Worker_id);  
+
+
+-- Q30. Write an SQL query to show record from one table that another table don't have (IMP)
+-- MINUS 
+select w.* from Worker as w
+left join Worker_Clone as wc
+using (Worker_id)
+where wc.WORKER_ID is NULL;
+
+-- Q31. Write an SQL query to show the current date and time
+-- DUAL
+select curdate();
+select now();
+
+-- Q32. Write an SQL query to show top n(say 5) record of table order by descending salary
+select * from Worker
+Order by salary desc
+limit 5;
+
+
+-- Q33. Write an SQL query to determine the nth(say 5) higest salary from Worker table
+select * from Worker 
+Order by SALARY desc
+limit 1 offset 4; 
+
+select * from Worker 
+Order by SALARY desc
+limit 4,1; 
+
+
+-- Q34. Write an SQL query to determine the 5th Highest salary without using limit(IMP)
+select * from Worker w1
+where 5 = (select count(w2.SALARY) from Worker w2 where w2.SALARY >= w1.SALARY);
+ 
+-- Q35. Write an SQL query to fetch the list of employee with same salary (IMP)
+select * from Worker
+where SALARY IN ( select salary from Worker 
+group by Salary
+having count(SALARY) > 1);
+
+-- SELF JOIN  
+select w1.* from Worker w1, Worker w2
+where w1.SALARY = w2.SALARY and
+w1.WORKER_ID != w2.WORKER_ID;
+
+-- Q36. Write a query to show the 2nd highest salary from Worker table
+-- salary is duplicate like 5lac 5lac 3lac
+-- (so using limit it will give 5lac,using limit with distict give 3lac, and quey sub-query it gives 3lac)
+
+select SALARY from Worker
+order by SALARY desc
+limit 1 offset 1;  
+-- 5 lac
+
+select SALARY from Worker
+order by SALARY desc
+limit 1,1;
+-- 5 lac
+
+select distinct SALARY from Worker
+order by SALARY desc
+limit 1 offset 1;
+-- 3 lac
+
+select SALARY from Worker w1
+where 2 = (select count(w2.SALARY) from Worker w2 
+where w2.SALARY > w1.SALARY );
+-- 3 lac
+
+select max(SALARY) from Worker
+where SALARY NOT IN (select max(SALARY) from Worker);
+-- 3 lac
+
+-- Q37. Write a SQL Query to show one row twice of a table (IMP)
+select * from Worker
+UNION ALL
+select * from Worker order by WORKER_ID;
+
+
+-- Q38. SQl query to Print all Workers who does not get bonus;
+select * from Worker
+where WORKER_ID NOT IN (select Worker_Ref_id from Bonus);
+
+--  SQl query to Print all Workers who get bonus;
+select * from Worker
+where WORKER_ID IN (select Worker_Ref_id from Bonus);
+
+-- Q39. Write a SQL query to fetch the first 50% records from table; (IMP)
+select * from Worker 
+where Worker_Id <= (select count(Worker_id)/2 from Worker);
+
+
+-- Q40. Write a SQL query to fetch the department that have less than 4 people in it.
+select department,count(department) as depCount from Worker
+group by department
+having depCount < 4;
+
+-- Q41. Write a SQL query to fetch the department with the number of people in there.
+select department,count(department) from Worker
+group by department;
+
+-- Q42. Write a SQL query to show the last row from the table (IMP)
+select * from Worker
+where WORKER_ID = (select max(WORKER_ID) from Worker);
+
+-- Q43. Write a SQL query to show the first row from the table (IMP)
+select * from Worker
+where WORKER_ID = (select min(WORKER_ID) from Worker);
+
+-- Q44. Write a SQL query to fetch tha Last 5 Query from Worker Table
+(select * from Worker
+order by WORKER_ID desc limit 5)
+order by WORKER_ID asc;
+
+-- Q45. Write a SQL query to print the name of employee having salary each department (BEST)
+select w.Department,w.FIRST_NAME,w.SALARY from
+(select max(SALARY) as maxSal,DEPARTMENT from Worker group by Department) as temp
+inner join Worker w
+on temp.Department = temp.Department and temp.maxSal = w.SALARY;
+
+-- Q46. Write a SQL to fetch three maximum Salaries using co-related Query (IMP).
+select distinct SALARY from Worker
+order by SALARY desc
+limit 3;
+
+select distinct SALARY from Worker w1
+where 3 >= (select count(distinct SALARY) from Worker w2 where w1.SALARY <= w2.SALARY)
+order by w1.SALARY desc;
+
+-- Q47. Write a SQL query to fetch three minimum salaries using co-related Query.
+select SALARY from Worker
+order by SALARY asc
+limit 3;
+
+select distinct SALARY from Worker w1
+where 3 >= (select count(distinct SALARY) from Worker w2 where w1.SALARY >= w2.SALARY);
+
+-- Q48. Write a SQL query to fetch nth maximum salaries using co-related Query.
+select distinct SALARY from Worker w1
+where n >= (select count(distinct SALARY) from Worker w2 where w1.SALARY <= w2.SALARY)
+order by w1.SALARY desc;
+
+-- Q49. Write a SQL to fetch dep along with their total salaries paid for each of them
+select department,sum(SALARY) as TOTAL from Worker
+group by department
+order by TOTAL desc;
+
+-- Q50. Write a SQL query to fetch the names of workers who earns the highest salary
+select CONCAT(FIRST_NAME,' ',LAST_NAME), SALARY from Worker 
+where SALARY = (select max(SALARY) from Worker);
+
+select CONCAT(FIRST_NAME,' ',LAST_NAME), SALARY from Worker
+where SALARY IN (select max(SALARY) from Worker);
+
+-- Q51. Remove all the reverse pair from a table 
+
