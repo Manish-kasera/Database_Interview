@@ -1,0 +1,157 @@
+-- CREATE DATABASE ORG; 
+-- SHOW DATABASES;
+USE ORG;
+-- CREATE TABLE Worker (
+-- WORKER_ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+-- FIRST_NAME CHAR(25),
+-- LAST_NAME CHAR(25),
+-- SALARY INT (15),
+-- JOINING_DATE DATETIME, 
+-- DEPARTMENT CHAR(25)
+-- );
+
+drop database ORG;
+
+
+-- INSERT INTO Worker 
+--  (WORKER_ID, FIRST_NAME, LAST_NAME, SALARY, JOINING_DATE, DEPARTMENT) VALUES 
+--  (001, 'Monika', 'Arora', 100000, '14-02-20 09.00.00', 'HR'), 
+--  (002, 'Niharika', 'Verma', 80000, '14-06-11 09.00.00', 'Admin'), 
+--  (003, 'Vishal', 'Singhal', 300000, '14-02-20 09.00.00', 'HR'), 
+--  (004, 'Amitabh', 'Singh', 500000, '14-02-20 09.00.00', 'Admin'), 
+--  (005, 'Vivek', 'Bhati', 500000, '14-06-11 09.00.00', 'Admin'), 
+--  (006, 'Vipul', 'Diwan', 200000, '14-06-11 09.00.00', 'Account'), 
+--  (007, 'Satish', 'Kumar', 75000, '14-01-20 09.00.00', 'Account'), 
+--  (008, 'Geetika', 'Chauhan', 90000, '14-04-11 09.00.00', 'Admin');
+--  
+--  CREATE TABLE Bonus ( 
+--  WORKER_REF_ID INT, 
+--  BONUS_AMOUNT INT(10), 
+--  BONUS_DATE DATETIME,
+--  FOREIGN KEY (WORKER_REF_ID)
+--  REFERENCES Worker (WORKER_ID)
+--  ON DELETE CASCADE
+-- );
+-- INSERT INTO Bonus
+--   (WORKER_REF_ID, BONUS_AMOUNT, BONUS_DATE) VALUES
+--    (001, 5000, '16-02-20'),
+--    (002, 3000, '16-06-11'), 
+--    (003, 4000, '16-02-20'),
+--    (001, 4500, '16-02-20'),
+--    (002, 3500, '16-06-11');
+--    
+--    
+-- CREATE TABLE Title (
+-- WORKER_REF_ID INT,
+-- WORKER_TITLE CHAR(25), 
+-- AFFECTED_FROM DATE,
+-- FOREIGN KEY (WORKER_REF_ID)
+-- REFERENCES Worker(WORKER_ID) 
+-- ON DELETE CASCADE
+-- );
+
+-- INSERT INTO Title VALUES (001, 'Manager', '2016-02-20 ');
+-- INSERT INTO Title VALUES (002, 'Executive', '2016-06-11');
+-- INSERT INTO Title VALUES (008, 'Executive', '2016-06-11'); 
+-- INSERT INTO Title VALUES (005, 'Manager', '2016-06-11'); 
+-- INSERT INTO Title VALUES (004, 'Asst.Manager', '2016-06-11');
+-- INSERT INTO Title VALUES (007, 'Executive', '2016-06-11');
+-- INSERT INTO Title VALUES (006, 'Lead', '2016-06-11 ');
+-- INSERT INTO Title VALUES (003, 'Lead', '2016-06-11');
+
+-- drop table Title;
+
+
+-- show tables;
+-- select * from Title;
+
+-- DQL
+
+select * from Worker;
+
+select  SALARY from Worker;
+
+select FIRST_NAME,SALARY from Worker;
+
+select FIRST_NAME,SALARY from Worker
+where SALARY > 100000;
+
+select 33+56;
+select now();
+select lcase("SACGIB");
+select ucase("manish");
+
+
+select FIRST_NAME,SALARY, DEPARTMENT from Worker
+where DEPARTMENT = 'Hr';
+
+
+select max(SALARY) from Worker;
+
+-- SALARY [80000 - 300000]
+select * from Worker 
+where SALARY BETWEEN 80000 AND 300000;
+
+
+-- OR statement
+-- HR,Account
+select * from Worker 
+where DEPARTMENT = 'Hr' OR DEPARTMENT = 'Account';
+
+-- better way : IN statement
+-- HR,Admin
+select * from Worker 
+where DEPARTMENT IN('HR', 'Admin');
+
+--  NOT statement
+-- NOT IN HR
+select * from Worker 
+where DEPARTMENT NOT IN('HR');
+
+-- starts with any char, then i, end with any no. of char
+select * from Worker
+where FIRST_NAME LIKE '_i%';
+
+-- Sorting
+select * from Worker 
+ORDER BY SALARY DESC;
+
+-- default wise ascending order
+select * from Worker 
+ORDER BY SALARY ;
+
+-- distinct keyword
+select distinct(DEPARTMENT) from Worker;
+
+-- count 
+select count(distinct(DEPARTMENT)) as Department_Count from Worker;
+
+-- Data GROUPING
+select DEPARTMENT , count(DEPARTMENT) from Worker
+group by DEPARTMENT;
+
+-- grouping and sorting
+select DEPARTMENT ,count(*) as NUMBER from Worker
+group by DEPARTMENT
+ORDER BY NUMBER;
+
+-- Average salary per department;
+select DEPARTMENT , AVG(SALARY) from Worker
+group by DEPARTMENT ;
+
+-- MIN SALARY OF EACH DEPARTMENT
+select DEPARTMENT,MIN(SALARY)  from Worker
+group by DEPARTMENT ;
+
+-- MAX SALARY OF EACH DEPARTMENT
+select DEPARTMENT,MAX(SALARY)  from Worker
+group by DEPARTMENT ;
+
+-- SUM SALARY OF EACH DEPARTMENT
+select DEPARTMENT,SUM(SALARY)  from Worker
+group by DEPARTMENT ;
+
+-- GROUP BY HAVING
+select DEPARTMENT,count(DEPARTMENT) from Worker
+group by DEPARTMENT
+having count(DEPARTMENT) > 2;
