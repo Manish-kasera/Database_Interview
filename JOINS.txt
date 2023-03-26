@@ -1,0 +1,59 @@
+create database temp;
+use temp;
+
+CREATE TABLE Customer(
+    id INT,
+    name varchar(100),
+    contact varchar(10),
+    PRIMARY KEY(id)
+);
+
+alter table Customer add address varchar(200);
+alter table Customer modify address INT;
+
+insert into Customer VALUES(1,'Manish','91020202');
+select * from Customer;
+insert into Customer VALUES(2,'pankaj','91020202');
+insert into Customer VALUES(3,'Sachin','91020202');
+insert into Customer VALUES(4,'Verma','91020202');
+
+CREATE TABLE Orders (
+    order_id INT primary Key,
+    cust_id INT,
+    order_date DATE,
+    foreign key(cust_id) 
+    references Customer (id)
+    on delete set NULL
+);
+
+select * from Orders;
+insert into Orders VALUES(11,3,'2023-02-23');
+insert into Orders VALUES(12,3,'2022-02-03');
+insert into Orders VALUES(13,1,'2022-02-03');
+
+drop database temp;
+drop table Orders;
+
+select * from Customer;
+delete from Orders where Order_id=13;
+
+-- INNER JOINS
+select c.id,c.name,c.contact,o.order_id,o.order_date from Customer AS c 
+INNER JOIN Orders AS o 
+on c.id = o.cust_id;
+
+select c.*,o.* from Customer AS c 
+INNER JOIN Orders AS o 
+on c.id = o.cust_id;
+
+-- LEFT JOINS
+
+select c.*,o.* from Customer AS c 
+LEFT JOIN Orders AS o 
+on c.id = o.cust_id;
+
+-- RIGHT JOINS
+
+select c.*,o.* from Customer AS c 
+RIGHT JOIN Orders AS o 
+on c.id = o.cust_id;
